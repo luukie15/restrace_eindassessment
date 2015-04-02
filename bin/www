@@ -29,6 +29,18 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function (socket) {
+    //socket.emit('message', 'Je bent geconnect met de super coole eindopdracht van Solo en Luuk!!');
+    //socket.broadcast.emit('message', 'Een andere gebruiker is ook geconnect met deze vet coole eindopdracht.');
+
+    socket.on('checking', function(message) {
+        console.log('een gebruiker heeft wat gecheckt: ' + message);
+        socket.broadcast.emit('message', message);
+    });
+});
+
 /**
  * Normalize a port into a number, string, or false.
  */
