@@ -40,8 +40,8 @@ var user = new ConnectRoles({
  * MODELS HERE
  * */
 require('./models/User')(mongoose, bcrypt);
-//require('./models/Waypoint')(mongoose);
-//require('./models/Race')(mongoose);
+require('./models/Waypoint')(mongoose);
+require('./models/Race')(mongoose);
 
 // pass passport for configuration
 require('./config/passport')(passport, mongoose);
@@ -81,12 +81,12 @@ app.use(user.middleware());
  * Routes
  * */
 var index = require('./routes/index')(handleError, user);
-//var waypoints = require('./routes/waypoints')(user);
-//var races = require('./routes/races')(mongoose, handleError, user);
+var waypoints = require('./routes/waypoints')(user);
+var races = require('./routes/races')(mongoose, handleError, user);
 
-//var indexApi = require('./routes/api/index')();
-//var waypointsApi = require('./routes/api/waypoints')(handleError, googlePlaces);
-//var racesApi = require('./routes/api/races')(mongoose, handleError, googlePlaces);
+var indexApi = require('./routes/api/index')();
+var waypointsApi = require('./routes/api/waypoints')(handleError, googlePlaces);
+var racesApi = require('./routes/api/races')(mongoose, handleError, googlePlaces);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -106,12 +106,12 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.use('/', index);
-//app.use('/waypoints', waypoints);
-//app.use('/races', races);
+app.use('/waypoints', waypoints);
+app.use('/races', races);
 
-//app.use('/api/index', indexApi);
-//app.use('/api/races', racesApi);
-//app.use('/api/waypoints', waypointsApi);
+app.use('/api/index', indexApi);
+app.use('/api/races', racesApi);
+app.use('/api/waypoints', waypointsApi);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
