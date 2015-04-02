@@ -9,7 +9,7 @@
     </style>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io.connect('localhost:3000');
+        var socket = io.connect('fast-basin-2333.herokuapp.com');
         socket.on('message', function (message) {
             alert('De server wil ff wat zeggen: ' + message);
         });
